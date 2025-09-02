@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Animal Picker & File Upload</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="/static/styles.css" rel="stylesheet" />
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box">
+        <h2>Select an animal</h2>
+        <p class="hint">Pick exactly one (checkboxes are constrained to one selection).</p>
+        <div class="choices">
+          <label class="choice">
+            <input type="checkbox" name="animal" value="cat" />
+            <span>Cat</span>
+          </label>
+          <label class="choice">
+            <input type="checkbox" name="animal" value="dog" />
+            <span>Dog</span>
+          </label>
+          <label class="choice">
+            <input type="checkbox" name="animal" value="elephant" />
+            <span>Elephant</span>
+          </label>
+        </div>
+        <div class="image-wrap">
+          <img id="animal-image" alt="" />
+          <div id="animal-placeholder" class="placeholder">No animal selected</div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h2>Upload a file</h2>
+        <p class="hint">Any file is fine; you'll get back its name, size, and type.</p>
+        <input id="fileInput" type="file" />
+        <div id="fileResult" class="result"></div>
+      </div>
+    </div>
+
+    <footer>
+      <small>
+        Optional: put local images at
+        <code>/static/images/cat.jpg</code>, <code>/static/images/dog.jpg</code>, <code>/static/images/elephant.jpg</code>.
+        If not present, online placeholders are used.
+      </small>
+    </footer>
+  </body>
+  </html>
+
+
