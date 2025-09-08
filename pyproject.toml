@@ -1,0 +1,13 @@
+[project]
+name = "keyword-compass"
+version = "0.1.0"
+description = "TF-IDF keywords, cosine similarity, and content gaps (Flask)."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "Flask>=3.0.0",
+  "gunicorn>=21.2.0",
+]
+
+[tool.uv]
+# uv works without extra config; this block is optional.

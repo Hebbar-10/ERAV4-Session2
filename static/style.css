@@ -1,0 +1,29 @@
+* { box-sizing: border-box; }
+body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background:#0f1221; color:#eaf0ff; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+h1 { margin: 0 0 8px; }
+header p { margin: 0 0 16px; opacity: .9; }
+.grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+.card { background:#161b34; border:1px solid #2b356d; border-radius: 12px; padding: 12px; }
+.card h3 { margin: 0 0 8px; font-size: 16px; }
+.card textarea { width: 100%; height: 180px; resize: vertical; padding: 10px; border-radius: 10px; background:#0e1330; color:#fff; border:1px solid #2b356d; }
+
+.controls { display:grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 12px; margin: 16px 0; }
+.controls label { display:flex; flex-direction:column; font-size: 12px; }
+.controls input { margin-top:6px; padding:10px; border-radius:10px; border:1px solid #2b356d; background:#0e1330; color:#fff; }
+#analyze { grid-column: span 5; padding: 12px; border:0; border-radius: 12px; background:#6b80ff; font-weight: 800; color:#0d1228; cursor:pointer; }
+#analyze:hover { filter: brightness(1.06); }
+
+.results.hidden { display:none; }
+.panel { background:#161b34; border:1px solid #2b356d; border-radius:12px; padding:12px; margin-bottom:12px; }
+.row { display:grid; grid-template-columns: 2fr 1fr; gap: 12px; }
+.tops { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.tops table { width:100%; border-collapse: collapse; }
+.tops th, .tops td, .matrix th, .matrix td { border-bottom: 1px solid #2b356d; padding:6px 8px; font-size: 14px; }
+.matrix { width:100%; border-collapse: collapse; text-align:center; }
+.badge { display:inline-block; padding:2px 6px; border-radius: 8px; background:#2ad4b7; color:#06221c; font-weight:700; font-size:12px; }
+.gap-list { display:grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.gap-item { padding:8px; border:1px dashed #2b356d; border-radius:10px; }
+.note { opacity:.8; font-size: 13px; }
