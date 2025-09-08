@@ -61,6 +61,26 @@
         <div id="gaps" class="gaps"></div>
       </div>
 
+      <div class="panel">
+        <h3>AI SEO Rewrite (Gemini)</h3>
+        <div class="controls" style="grid-template-columns: repeat(5, minmax(0,1fr));">
+          <label>Base text index (0/1/2)
+            <input id="seo_base" type="number" min="0" max="2" value="0">
+          </label>
+          <label>Word limit
+            <input id="seo_words" type="number" min="60" max="240" value="120">
+          </label>
+          <label>Tone
+            <input id="seo_tone" type="text" value="confident, clear, helpful">
+          </label>
+          <label>Audience
+            <input id="seo_audience" type="text" value="safety managers">
+          </label>
+          <button id="seo_rewrite">AI SEO Rewrite</button>
+        </div>
+        <textarea id="seo_output" placeholder="Gemini rewrite appears here..." style="width:100%;height:140px;margin-top:8px;"></textarea>
+      </div>
+
       <p class="note">How it works: tokenize → remove stopwords → compute TF, IDF, TF-IDF → cosine similarity → base-vs-others gaps by TF-IDF delta.</p>
     </section>
 

@@ -1,9 +1,17 @@
 import math
+import os
 import re
 from collections import Counter, defaultdict
 from flask import Flask, render_template, request, jsonify
+from google import genai  # pip package: google-genai
 
 app = Flask(__name__)
+
+# Gemini client setup
+try:
+    gemini_client = genai.Client()  # reads GEMINI_API_KEY from env
+except Exception:
+    gemini_client = None
 
 # Tiny built-in English stopword list (editable)
 STOPWORDS = {
@@ -135,6 +143,49 @@ def analyze():
         "gaps": gaps,
         "vocab_size": len(vocab)
     })
+
+@app.route("/api/rewrite", methods=["POST"])
+def api_rewrite():
+    if gemini_client is None:
+        return jsonify({"error": "Gemini not configured on server"}), 400
+
+    data = request.get_json(force=True)
+    base_text = (data.get("text") or "").strip()
+    keywords = [k.strip() for k in (data.get("keywords") or []) if k.strip()]
+    word_limit = int(data.get("word_limit", 120))
+    tone = (data.get("tone") or "confident, clear, helpful").strip()
+    audience = (data.get("audience") or "safety managers").strip()
+    model = (data.get("model") or "gemini-2.5-flash").strip()
+
+    if not base_text:
+        return jsonify({"error": "Missing text"}), 400
+
+    prompt = f"""
+You are an expert B2B SEO copywriter. Rewrite the paragraph below into ONE concise,
+high-quality paragraph optimized for readability and on-page SEO.
+
+Constraints:
+- Aim for ~{word_limit} words (±15%).
+- Use these terms naturally (no keyword stuffing): {", ".join(keywords[:12]) if keywords else "—"}
+- Plain English, active voice, short sentences (avg 16–20 words).
+- Keep claims generic; do not invent metrics or case studies.
+- Return ONLY the paragraph text.
+
+Audience: {audience}
+Tone: {tone}
+
+Paragraph:
+\"\"\"{base_text}\"\"\"
+""".strip()
+
+    try:
+        resp = gemini_client.models.generate_content(
+            model=model,
+            contents=prompt
+        )  # basic text generation; GEMINI_API_KEY picked from env
+        return jsonify({"result": resp.text})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route("/health")
 def health():

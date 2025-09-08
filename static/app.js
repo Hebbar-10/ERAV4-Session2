@@ -1,3 +1,5 @@
+let LAST_ANALYSIS = null;
+
 function getTexts() {
   return [0,1,2].map(i => document.getElementById(`t${i}`).value || "");
 }
@@ -21,6 +23,7 @@ async function analyze() {
 }
 
 function renderResults(data) {
+  LAST_ANALYSIS = data;           // <-- keep it for SEO rewrite
   document.getElementById("results").classList.remove("hidden");
   renderTopKeywords(data.top_keywords);
   renderSimilarity(data.similarity);
@@ -89,4 +92,37 @@ function renderGaps(gaps) {
   container.appendChild(grid);
 }
 
+async function seoRewrite() {
+  const baseIdx = parseInt(document.getElementById("seo_base").value || "0", 10);
+  const wordLimit = parseInt(document.getElementById("seo_words").value || "120", 10);
+  const tone = document.getElementById("seo_tone").value || "confident, clear, helpful";
+  const audience = document.getElementById("seo_audience").value || "safety managers";
+
+  // get source text from the input boxes
+  const baseText = document.getElementById(`t${baseIdx}`)?.value || "";
+
+  // use the top keywords we already computed for that text (fall back to empty list)
+  let keywords = [];
+  if (LAST_ANALYSIS && LAST_ANALYSIS.top_keywords && LAST_ANALYSIS.top_keywords[baseIdx]) {
+    keywords = LAST_ANALYSIS.top_keywords[baseIdx].map(it => it.term).slice(0, 12);
+  }
+
+  const res = await fetch("/api/rewrite", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      text: baseText,
+      keywords,
+      word_limit: wordLimit,
+      tone,
+      audience,
+      model: "gemini-2.5-flash"
+    })
+  });
+
+  const data = await res.json();
+  document.getElementById("seo_output").value = data.result || (data.error ? `Error: ${data.error}` : "(no output)");
+}
+
 document.getElementById("analyze").addEventListener("click", analyze);
+document.getElementById("seo_rewrite").addEventListener("click", seoRewrite);
